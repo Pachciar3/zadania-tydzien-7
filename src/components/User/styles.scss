@@ -1,0 +1,22 @@
+.user {
+  text-align: left;
+  padding: 10px;
+  margin: 5px auto;
+  max-width: 300px;
+  background-color: #232322;
+  color: #fff;
+  &__name {
+    margin: 0;
+    a {
+      color: #98da40;
+    }
+  }
+  &__info {
+    list-style: none;
+    padding: 5px 0px 0px;
+    margin: 0;
+  }
+  &__thumbnail {
+    text-align: center;
+  }
+}
