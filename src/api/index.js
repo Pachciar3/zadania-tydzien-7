@@ -4,8 +4,7 @@ function request(endpoint, method = "GET", data = null) {
   const config = {
     method,
     headers: {
-      "Content-type": "application/json",
-      Authorization: "Bearer nvnvndf"
+      "Content-type": "application/json"
     }
   };
   if (method === "POST" || method === "PATCH") {
@@ -13,29 +12,35 @@ function request(endpoint, method = "GET", data = null) {
   }
   const url = `${API_URL}${endpoint}`;
   return fetch(url, config).then(response => {
-    return response.json();
+    if (response.ok) {
+      return response.json();
+    } else {
+      return false
+    }
   });
 }
 
-function get(endpoint) {
+const get = (endpoint) => {
   return request(endpoint);
 }
 
-function post(endpoint, data) {
+const post = (endpoint, data) => {
   return request(endpoint, "POST", data);
 }
 
-function patch(endpoint, data) {
+const patch = (endpoint, data) => {
   return request(endpoint, "PATCH", data);
 }
 
-function _delete(endpoint) {
+const _delete = (endpoint) => {
   return request(endpoint, "DELETE");
 }
 
-export default {
+const api = {
   get,
   post,
   patch,
   delete: _delete
-};
+}
+
+export default api;

@@ -11,7 +11,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import Loader from './components/Loader';
-import Snackbar from './components/Snackbar';
+import Message from './components/Message';
 
 import './App.css';
 
@@ -19,20 +19,22 @@ function App() {
   const [data, setData] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
   const [hasError, setError] = useState(false);
-  const [hasErrorMessage, setErrorMessage] = useState(true);
-
-  function closeErorrMessage() {
-    setErrorMessage(false)
-  }
 
   useEffect(() => {
     api
       .get('?results=10')
-      .then(result => {
-        setData(result);
-        setLoaded(true);
+      .then(data => {
+        if (data) {
+          setData(data.results);
+          setLoaded(true);
+        } else {
+          setError(true);
+        }
       })
-      .catch(error => setError(true));
+      .catch(error => {
+        setError(true);
+        console.log(error);
+      });
   }, [])
   if (isLoaded) {
     return (
@@ -40,7 +42,7 @@ function App() {
         <Router>
           <Switch>
             <Route path="/users/:id">
-              <UserDetails data={data.results} />
+              <UserDetails data={data} />
             </Route>
             <Route path="/users">
               <UserList data={data} />
@@ -55,7 +57,7 @@ function App() {
   }
   if (hasError) {
     return (
-      hasErrorMessage && <Snackbar handleClose={closeErorrMessage}>Something get wrong</Snackbar>
+      <Message type="error">Something get wrong. Sorry</Message>
     )
   }
   return (
